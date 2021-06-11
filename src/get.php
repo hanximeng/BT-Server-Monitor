@@ -47,7 +47,7 @@
 		$data['request_token'] = md5(time() . '' . md5($panel['apikey'][$i]));
 		$data['request_time'] = time();
 		
-		$result = HttpPostCookie($panel['url'][$i], '/system?action=GetNetWork', $data, 5, $cookiePathPre);
+		$result = HttpPostCookie($panel['url'][$i], '/system?action=GetNetWork', $data, $cookiePathPre, 5);
 		$result = json_decode($result, true);
 		
 		$return[$i]['name'] = $panel['name'][$i];
@@ -70,9 +70,11 @@
 	
 	$_SESSION['lastSubTime'] = time();
 	
-	function HttpPostCookie($url, $dir, $data, $timeout = 10, $_cookPathPre) {
+	function HttpPostCookie($url, $dir, $data, $_cookPathPre, $timeout = 10) {
 		$cookie_file = './data/' . $_cookPathPre . 'cook/' . md5($url) . '.cookie';
 		if (!file_exists($cookie_file)) {
+			mkdir('./data/');
+			mkdir('./data/' . $_cookPathPre . 'cook/');
 			$fp = fopen($cookie_file,'w+');
 			fclose($fp);
 		}
